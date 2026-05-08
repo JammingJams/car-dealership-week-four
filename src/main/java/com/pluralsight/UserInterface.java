@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -41,6 +42,36 @@ public class UserInterface {
     }
 
     public void processGetByPriceRequest() {
+        boolean userLoop = true;
+        double minPrice = 0;
+        double maxPrice = 0;
+        while (userLoop) {
+            System.out.println("Type in the minimum price!");
+            try {
+                minPrice = sc.nextDouble();
+                sc.nextLine();
+            }
+            catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.print("Don't put strings...");
+                sc.nextLine();
+            }
+        }
+
+        while (userLoop) {
+            System.out.println("Type in the minimum price!");
+            try {
+                maxPrice = sc.nextDouble();
+                sc.nextLine();
+            }
+            catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.print("Don't put strings...");
+                sc.nextLine();
+            }
+        }
+
+        dealership.getVehiclesByPrice(minPrice,maxPrice);
     }
 
     public void processGetByMileageRequest() {
@@ -112,4 +143,7 @@ public class UserInterface {
             }
         }
     }
+
+    //public void
+
 }
