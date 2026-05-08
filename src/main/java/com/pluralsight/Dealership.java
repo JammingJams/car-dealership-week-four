@@ -11,6 +11,7 @@ public class Dealership {
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.inventory = new ArrayList<>();
     }
     //Getters and Setters are here!!!
     public String getName() {return name;}
@@ -36,7 +37,14 @@ public class Dealership {
         return null;
     }
     public List<Vehicle> getVehiclesByColor(String color) {
-        return null;
+        List<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getColor().equalsIgnoreCase(color)) {
+                matchingVehicles.add(v);
+            }
+        }
+
+        return matchingVehicles;
     }
     public List<Vehicle> getVehiclesByMileage(double min, double max) {
         return null;
