@@ -51,11 +51,11 @@ public class Dealership {
         return checkVehicle(vehicleType, "v");
     }
 
-    public void addVehicle(List<Vehicle> vehicle) {
+    public void addVehicle(Vehicle vehicle) {
         inventory.add(vehicle);
     }
 
-    public void removeVehicle(List<Vehicle> vehicle) {
+    public void removeVehicle(Vehicle vehicle) {
         inventory.remove(vehicle);
     }
 
@@ -65,18 +65,21 @@ public class Dealership {
             if (checkType.equals("p")) {
                 if (v.getPrice() >= min && v.getPrice() <= max) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
 
             else if (checkType.equals("y")) {
                 if (v.getYear() >= min && v.getYear() <= max) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
 
             else if (checkType.equals("m")) {
                 if (v.getOdometer() >= min && v.getOdometer() <= max) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
         }
@@ -88,13 +91,15 @@ public class Dealership {
         List<Vehicle> matchingVehicles = new ArrayList<>();
         for (Vehicle v : inventory) {
             if (checkType.equals("c")) {
-                if (v.getColor().equalsIgnoreCase(condition)) {
+                if (v.getColor().toLowerCase().equalsIgnoreCase(condition)) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
-            if (checkType.equals("v")) {
-                if (v.getVehicleType().equalsIgnoreCase(condition)) {
+            else if (checkType.equals("v")) {
+                if (v.getVehicleType().toLowerCase().equalsIgnoreCase(condition)) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
         }
@@ -106,8 +111,9 @@ public class Dealership {
         List<Vehicle> matchingVehicles = new ArrayList<>();
         for (Vehicle v : inventory) {
             if (checkType.equals("mm")) {
-                if (v.getMake().equalsIgnoreCase(condition) && v.getModel().equalsIgnoreCase(conditionTwo)) {
+                if (v.getMake().toLowerCase().equalsIgnoreCase(condition) && v.getModel().toLowerCase().equalsIgnoreCase(conditionTwo)) {
                     matchingVehicles.add(v);
+                    UserInterface.printOutVehicle(v);
                 }
             }
         }

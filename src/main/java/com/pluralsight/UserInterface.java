@@ -45,7 +45,7 @@ public class UserInterface {
     public void processGetByPriceRequest() {
         double[] prices = ui.userInterfaceAskUserInput();
         double min = prices[0];
-        double max = prices[0];
+        double max = prices[1];
 
         dealership.getVehiclesByPrice(min, max);
     }
@@ -53,7 +53,7 @@ public class UserInterface {
     public void processGetByMileageRequest() {
         double[] miles = ui.userInterfaceAskUserInput();
         double min = miles[0];
-        double max = miles[0];
+        double max = miles[1];
 
         dealership.getVehiclesByPrice(min, max);
     }
@@ -61,7 +61,7 @@ public class UserInterface {
     public void processGetByYearRequest() {
         double[] years = ui.userInterfaceAskUserInput();
         double min = years[0];
-        double max = years[0];
+        double max = years[1];
 
         dealership.getVehiclesByPrice(min, max);
     }
@@ -93,10 +93,12 @@ public class UserInterface {
     }
 
     public void processGetAddVehiclesRequest() {
+        ui.checkUserSearch("a");
 
     }
 
     public void processGetRemoveVehiclesRequest() {
+        ui.checkUserSearch("r");
 
     }
 
@@ -134,7 +136,7 @@ public class UserInterface {
 
                 case ("7") -> ui.processGetAllVehiclesRequest();
 
-                case ("X") -> userLoop = false;
+                case ("x") -> userLoop = false;
 
                 default -> System.out.println("Hey please don't input that...");
             }
@@ -197,6 +199,51 @@ public class UserInterface {
         String[] conditions = {conditionOne, conditionTwo};
 
         return conditions;
+    }
+
+    public void checkUserSearch(String option) {
+        String check = "";
+        if (option.equalsIgnoreCase("a")) {
+            check = "adding";
+        }
+
+        else if (option.equalsIgnoreCase("r")) {
+            check = "removing";
+        }
+
+        System.out.printf("Type in a vehicle you would be interested in %s: ", check);
+        String userChoice = sc.nextLine().trim();
+        boolean noMatchFound = true;
+
+        for (Vehicle v : dealership.getInventory()) {
+            if (userChoice.equalsIgnoreCase(v.getColor()) || userChoice.equalsIgnoreCase(v.getVehicleType())
+                    || userChoice.equalsIgnoreCase(v.getMake()) || userChoice.equalsIgnoreCase(v.getModel())
+                    || userChoice.equalsIgnoreCase(String.valueOf(v.getPrice())) || userChoice.equalsIgnoreCase(String.valueOf(v.getYear()))
+                    || userChoice.equalsIgnoreCase(String.valueOf(v.getOdometer())) || userChoice.equalsIgnoreCase(String.valueOf(v.getVin())))
+            {
+                if (option.equalsIgnoreCase("a")) {
+                    printOutVehicle(v);
+                    ui.dealership.addVehicle(v);
+                    noMatchFound = false;
+                }
+                else if (option.equalsIgnoreCase("r")) {
+                    printOutVehicle(v);
+                    ui.dealership.removeVehicle(v);
+                    noMatchFound = false;
+                }
+
+            }
+
+            if (noMatchFound) {
+                System.out.println("No match found :(");
+            }
+
+        }
+
+    }
+
+    public static void printOutVehicle(Vehicle v) {
+        System.out.printf("%d|%d|%s|%s|%s|%s|%d|%.2f\n", v.getVin(), v.getYear(), v.getMake(), v.getModel(), v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
     }
 
 }
