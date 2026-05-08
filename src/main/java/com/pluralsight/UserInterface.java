@@ -55,7 +55,7 @@ public class UserInterface {
         double min = miles[0];
         double max = miles[1];
 
-        dealership.getVehiclesByPrice(min, max);
+        dealership.getVehiclesByMileage(min, max);
     }
 
     public void processGetByYearRequest() {
@@ -83,7 +83,7 @@ public class UserInterface {
     public void processGetByMakeVehicleTypeRequest() {
         String vehicleType = ui.userInterfaceAskUserInputString("vehicle type");
 
-        List<Vehicle> test = dealership.getVehiclesByColor(vehicleType);
+        dealership.getVehiclesByColor(vehicleType);
     }
 
     public void processGetAllVehiclesRequest() {
@@ -213,31 +213,28 @@ public class UserInterface {
 
         System.out.printf("Type in a vehicle you would be interested in %s: ", check);
         String userChoice = sc.nextLine().trim();
-        boolean noMatchFound = true;
+        Vehicle v = null;
 
-        for (Vehicle v : dealership.getInventory()) {
-            if (userChoice.equalsIgnoreCase(v.getColor()) || userChoice.equalsIgnoreCase(v.getVehicleType())
-                    || userChoice.equalsIgnoreCase(v.getMake()) || userChoice.equalsIgnoreCase(v.getModel())
-                    || userChoice.equalsIgnoreCase(String.valueOf(v.getPrice())) || userChoice.equalsIgnoreCase(String.valueOf(v.getYear()))
-                    || userChoice.equalsIgnoreCase(String.valueOf(v.getOdometer())) || userChoice.equalsIgnoreCase(String.valueOf(v.getVin())))
+        for (Vehicle c : dealership.getInventory()) {
+            if (userChoice.equalsIgnoreCase(c.getColor()) || userChoice.equalsIgnoreCase(c.getVehicleType())
+                    || userChoice.equalsIgnoreCase(c.getMake()) || userChoice.equalsIgnoreCase(c.getModel())
+                    || userChoice.equalsIgnoreCase(String.valueOf(c.getPrice())) || userChoice.equalsIgnoreCase(String.valueOf(c.getYear()))
+                    || userChoice.equalsIgnoreCase(String.valueOf(c.getOdometer())) || userChoice.equalsIgnoreCase(String.valueOf(c.getVin())))
             {
-                if (option.equalsIgnoreCase("a")) {
-                    printOutVehicle(v);
-                    ui.dealership.addVehicle(v);
-                    noMatchFound = false;
-                }
-                else if (option.equalsIgnoreCase("r")) {
-                    printOutVehicle(v);
-                    ui.dealership.removeVehicle(v);
-                    noMatchFound = false;
-                }
-
+            v = c;
             }
 
-            if (noMatchFound) {
-                System.out.println("No match found :(");
-            }
-
+        }
+        if (v == null) {
+            System.out.println("No match found!");
+        }
+        else if (option.equalsIgnoreCase("a")) {
+            printOutVehicle(v);
+            dealership.addVehicle(v);
+        }
+        else if (option.equalsIgnoreCase("r")) {
+            printOutVehicle(v);
+            dealership.removeVehicle(v);
         }
 
     }
