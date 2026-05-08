@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -42,51 +43,47 @@ public class UserInterface {
     }
 
     public void processGetByPriceRequest() {
-        boolean userLoop = true;
-        double minPrice = 0;
-        double maxPrice = 0;
-        while (userLoop) {
-            System.out.println("Type in the minimum price!");
-            try {
-                minPrice = sc.nextDouble();
-                sc.nextLine();
-            }
-            catch (InputMismatchException e) {
-                e.printStackTrace();
-                System.out.print("Don't put strings...");
-                sc.nextLine();
-            }
-        }
+        double[] prices = ui.userInterfaceAskUserInput();
+        double min = prices[0];
+        double max = prices[0];
 
-        while (userLoop) {
-            System.out.println("Type in the minimum price!");
-            try {
-                maxPrice = sc.nextDouble();
-                sc.nextLine();
-            }
-            catch (InputMismatchException e) {
-                e.printStackTrace();
-                System.out.print("Don't put strings...");
-                sc.nextLine();
-            }
-        }
-
-        dealership.getVehiclesByPrice(minPrice,maxPrice);
+        dealership.getVehiclesByPrice(min, max);
     }
 
     public void processGetByMileageRequest() {
+        double[] miles = ui.userInterfaceAskUserInput();
+        double min = miles[0];
+        double max = miles[0];
+
+        dealership.getVehiclesByPrice(min, max);
     }
 
     public void processGetByYearRequest() {
+        double[] years = ui.userInterfaceAskUserInput();
+        double min = years[0];
+        double max = years[0];
+
+        dealership.getVehiclesByPrice(min, max);
     }
 
     public void processGetByMakeModelRequest() {
+        String[] makeModel = ui.userInterfaceAskUserInputStrings();
+        String make = makeModel[0];
+        String model = makeModel[1];
+
+        dealership.getVehiclesByMakeModel(make, model);
     }
 
     public void processGetByMakeColorRequest() {
+        String color = ui.userInterfaceAskUserInputString("color");
+
+        dealership.getVehiclesByColor(color);
     }
 
     public void processGetByMakeVehicleTypeRequest() {
+        String vehicleType = ui.userInterfaceAskUserInputString("vehicle type");
+
+        List<Vehicle> test = dealership.getVehiclesByColor(vehicleType);
     }
 
     public void processGetAllVehiclesRequest() {
@@ -144,6 +141,62 @@ public class UserInterface {
         }
     }
 
-    //public void
+    public double[] userInterfaceAskUserInput() {
+        boolean userLoop = true;
+        double minPrice = 0;
+        double maxPrice = 0;
+
+        while (userLoop) {
+            System.out.println("Type in the minimum price!");
+            try {
+                minPrice = sc.nextDouble();
+                sc.nextLine();
+                userLoop = false;
+            }
+            catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.print("Don't put strings...");
+                sc.nextLine();
+            }
+        }
+
+        userLoop = true;
+
+        while (userLoop) {
+            System.out.println("Type in the maximum price!");
+            try {
+                maxPrice = sc.nextDouble();
+                sc.nextLine();
+                userLoop = false;
+            }
+            catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.print("Don't put strings...");
+                sc.nextLine();
+            }
+        }
+        double[] minMaxPrice = {minPrice, maxPrice};
+
+        return minMaxPrice;
+    }
+
+    public String userInterfaceAskUserInputString(String checkType) {
+        System.out.printf("Hey what is the %s you want: ", checkType);
+        String condition = sc.nextLine().trim().toLowerCase();
+
+        return condition;
+    }
+
+    public String[] userInterfaceAskUserInputStrings() {
+        System.out.print("Hey what is the Make you want: ");
+        String conditionOne = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Hey what is the Model you want: ");
+        String conditionTwo = sc.nextLine().trim().toLowerCase();
+
+        String[] conditions = {conditionOne, conditionTwo};
+
+        return conditions;
+    }
 
 }

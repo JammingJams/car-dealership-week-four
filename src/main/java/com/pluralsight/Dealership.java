@@ -51,12 +51,12 @@ public class Dealership {
         return checkVehicle(vehicleType, "v");
     }
 
-    public List<Vehicle> addVehicle(List<Vehicle> vehicle) {
-        return null;
+    public void addVehicle(List<Vehicle> vehicle) {
+        inventory.add(vehicle);
     }
 
-    public List<Vehicle> removeVehicle(List<Vehicle> vehicle) {
-        return null;
+    public void removeVehicle(List<Vehicle> vehicle) {
+        inventory.remove(vehicle);
     }
 
     public List<Vehicle> checkVehicle(double min, double max, String checkType) {
