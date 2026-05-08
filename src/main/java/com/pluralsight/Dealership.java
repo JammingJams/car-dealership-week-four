@@ -27,28 +27,28 @@ public class Dealership {
 
     //Other methods are here!!!
     public List<Vehicle> getVehiclesByPrice(double min, double max) {
-        return inventory;
+        return null;
     }
     public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
-        return inventory;
+        return null;
     }
     public List<Vehicle> getVehiclesByYear(double min, double max) {
-        return inventory;
+        return null;
     }
     public List<Vehicle> getVehiclesByColor(String color) {
-        return inventory;
+        return null;
     }
     public List<Vehicle> getVehiclesByMileage(double min, double max) {
-        return inventory;
+        return null;
     }
     public List<Vehicle> getVehiclesByType(String vehicleType) {
-        return inventory;
+        return null;
     }
-    public void addVehicle(List<Vehicle> vehicle) {
-
+    public List<Vehicle> addVehicle(List<Vehicle> vehicle) {
+        return null;
     }
-    public void removeVehicle(List<Vehicle> vehicle) {
-
+    public List<Vehicle> removeVehicle(List<Vehicle> vehicle) {
+        return null;
     }
 
 
