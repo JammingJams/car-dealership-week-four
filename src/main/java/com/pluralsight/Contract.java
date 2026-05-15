@@ -1,17 +1,21 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+
 public abstract class Contract {
     protected String date, customerName, customerEmail;
     protected double totalPrice, monthlyPayment;
     protected Vehicle vehicleSold;
+    private ArrayList<Contract> contracts;
 
-    public Contract(String date, String customerName, String customerEmail, double totalPrice, double monthlyPayment, Vehicle vehicleSold) {
+    public Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.totalPrice = totalPrice;
         this.monthlyPayment = monthlyPayment;
         this.vehicleSold = vehicleSold;
+        this.contracts = new ArrayList<>();
     }
 
     public String getCustomerEmail() {
@@ -44,6 +48,10 @@ public abstract class Contract {
 
     public void setVehicleSold(Vehicle vehicleSold) {
         this.vehicleSold = vehicleSold;
+    }
+
+    public ArrayList<Contract> getContracts() {
+        return contracts;
     }
 
     public abstract double getTotalPrice();

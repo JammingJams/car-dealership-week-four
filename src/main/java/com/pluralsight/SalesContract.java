@@ -3,16 +3,17 @@ package com.pluralsight;
 import java.util.Scanner;
 
 public class SalesContract extends Contract{
-    private double salesTaxAmount, recordingFee, processingFee;
+    private double salesTaxAmount, recordingFee, processingFee, months;
     private boolean hasFinanceOption;
     public static Scanner sc = new Scanner(System.in);
 
-    public SalesContract(String date, String customerName, String customerEmail, double totalPrice, double monthlyPayment, Vehicle vehicleSold, double salesTaxAmount, double recordingFee, double processingFee, boolean hasFinanceOption) {
-        super(date, customerName, customerEmail, totalPrice, monthlyPayment, vehicleSold);
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
+        super(date, customerName, customerEmail, vehicleSold);
         this.salesTaxAmount = salesTaxAmount;
         this.recordingFee = recordingFee;
         this.processingFee = processingFee;
         this.hasFinanceOption = hasFinanceOption;
+        this.months = months;
     }
 
     public double getSalesTaxAmount() {
@@ -47,12 +48,24 @@ public class SalesContract extends Contract{
         this.hasFinanceOption = hasFinanceOption;
     }
 
+    public double getMonths() {
+        return months;
+    }
+
+    public void setMonths(double months) {
+        this.months = months;
+    }
+
     @Override
     public double getMonthlyPayment() {
         if (getVehicleSold().getPrice() >= 10000) {
-            return 1.0425;
+            setSalesTaxAmount(1.0425);
+            setMonths(48);
+            return getVehicleSold().getPrice() * (0.0425 / 12) / (1 - ( Math.pow(1 + (0.0425 / 12), -getMonths() ) ) );
         }
-        return 1.0525;
+        setSalesTaxAmount(1.0525);
+        setMonths(24);
+        return getVehicleSold().getPrice() * (0.0525 / 12) / (1 - ( Math.pow(1 + (0.0525 / 12), -getMonths() ) ) );
     }
 
     @Override
@@ -60,7 +73,7 @@ public class SalesContract extends Contract{
         boolean isFinancing = false;
         boolean loop = true;
 
-        setSalesTaxAmount(1.05);
+        getMonthlyPayment();
         setRecordingFee(100);
 
         if (getVehicleSold().getPrice() < 10000) {
@@ -90,8 +103,13 @@ public class SalesContract extends Contract{
         }
 
         if (isFinancing) {
-            return ( ( getMonthlyPayment() * getVehicleSold().getPrice() ) + getRecordingFee() + getProcessingFee() ) * getSalesTaxAmount();
+            return ( (getMonthlyPayment() * getMonths())  + getRecordingFee() + getProcessingFee() ) * getSalesTaxAmount();
         }
-        return ( getVehicleSold().getPrice() + getRecordingFee() + getProcessingFee() ) * getSalesTaxAmount();
+        return ( (getMonthlyPayment() * getMonths())  + getRecordingFee() + getProcessingFee() ) * getSalesTaxAmount();
+    }
+
+    @Override
+    public String toString() {
+        return String.format(        "SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%b|%.2f",        getDate(),        getCustomerName(),        getCustomerEmail(),        getVehicleSold().getVin(),        getVehicleSold().getYear(),       getVehicleSold().getMake(),        getVehicleSold().getModel(),        getVehicleSold().getVehicleType(),        getVehicleSold().getColor(),        getVehicleSold().getOdometer(),        getVehicleSold().getPrice(),        getSalesTaxAmount(),        getRecordingFee(),        getTotalPrice(),        isHasFinanceOption(),        getMonthlyPayment()    );
     }
 }

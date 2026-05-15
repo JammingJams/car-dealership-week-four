@@ -1,16 +1,21 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
     private Dealership dealership;
+    private ArrayList<Contract> contracts;
     public static Scanner sc = new Scanner(System.in);
     public static UserInterface ui = new UserInterface();
 
     public UserInterface() {
         this.dealership = DealershipFileManger.getDealership();
+        this.contracts = ContractDataManager.getContractTransaction();
     }
 
     public static void display() {
@@ -36,7 +41,7 @@ public class UserInterface {
 
                 case ("3") -> ui.processGetRemoveVehiclesRequest();
 
-                case ("4") -> System.out.println("SALE/LEASE PROCESS HERE");
+                case ("4") -> ui.processGetSaleLeaseContract();
 
                 case ("x") -> userInMainMenu = false;
 
@@ -106,7 +111,7 @@ public class UserInterface {
     }
 
     public void processGetSaleLeaseContract() {
-
+        ui.userBuyLeaseCheckOut();
     }
 
     public Dealership getDealership() {
@@ -253,7 +258,7 @@ public class UserInterface {
         while (userLoop) {
 
             System.out.println("Please select an option");
-            System.out.print("(1) -> Buy Vehicle\n +" +
+            System.out.println("(1) -> Buy Vehicle\n" +
                     "(2) -> Lease Vehicle\n" +
                     "(X) -> Exit Menu");
 
@@ -263,23 +268,49 @@ public class UserInterface {
                     Vehicle vehicleChoice = null;
                     while (saleLoop) {
                         System.out.print("Please type in the VIN number for the vehicle you want: ");
+
                         try {
+                            int userInput = sc.nextInt();
+
                             for (Vehicle v : dealership.getInventory()) {
-                                if (sc.nextInt() == v.getVin()) {
+                                if (userInput == v.getVin()) {
                                     sc.nextLine();
                                     vehicleChoice = v;
-                                    break;
+                                    saleLoop = false;
                                 }
                             }
-                            System.out.println("Invalid VIN number!");
-                            sc.nextLine();
+                            if (saleLoop) {
+                                System.out.println("Invalid VIN number!");
+                            }
                         }
+
                         catch (InputMismatchException e) {
                             System.out.println("Invalid UserInput");
                             sc.nextLine();
                         }
                     }
-                    SalesContract salesContract = new SalesContract();
+
+                    DateTimeFormatter isoFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate unParsedDate = LocalDate.now();
+                    String dateNow = unParsedDate.format(isoFormat);
+
+
+                    System.out.print("Please enter your name: ");
+                    String userName = sc.nextLine().trim();
+
+                    System.out.print("Please enter your email: ");
+                    String userEmail = sc.nextLine().trim();
+
+                    SalesContract salesContract = new SalesContract(dateNow, userName, userEmail, vehicleChoice);
+
+                    contracts.add(salesContract);
+                    contracts.add(salesContract);
+
+                    System.out.println(contracts.size());
+
+                    for (Contract c : contracts) {
+                        System.out.println(c);
+                    }
 
                 }
                 case ("2") -> {
