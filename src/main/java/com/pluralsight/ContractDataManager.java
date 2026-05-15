@@ -9,13 +9,12 @@ public class ContractDataManager {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/contract.csv"));
             String line = bufferedReader.readLine();
-            String[] tempArray = line.split("\\|");
 
             ArrayList<Contract> contracts = new ArrayList<>();
 
             while ((line = bufferedReader.readLine()) != null) {
 
-                tempArray = line.split("\\|");
+                String[] tempArray = line.split("\\|");
 
                 try {
                     String contractType = tempArray[0];
@@ -81,13 +80,53 @@ public class ContractDataManager {
         return null;
     }
 
-    public static void saveContractTransaction() {
+    public static void saveContractTransaction(ArrayList<Contract> contracts) {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/contract.csv"));
-        }
-        catch (IOException e) {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/contract.csv"));
+
+            bufferedWriter.newLine();
+
+            for (Contract c : contracts) {
+                int vin = c.getVehicleSold().getVin();
+                int year = c.getVehicleSold().getYear();
+                String make = c.getVehicleSold().getMake();
+                String model = c.getVehicleSold().getModel();
+                String vehicleType = c.getVehicleSold().getVehicleType();
+                String color = c.getVehicleSold().getColor();
+                int odometer = c.getVehicleSold().getOdometer();
+                double price = c.getVehicleSold().getPrice();
+
+                String userName = c.getCustomerName();
+                String userEmail = c.getCustomerEmail();
+                String date = c.getDate();
+                double totalPrice = c.getTotalPrice();
+                double monthlyPayment = c.getMonthlyPayment();
+                Vehicle vehicleSold = c.getVehicleSold();
+
+                if (c instanceof SalesContract) {
+                    double saleTaxAmount = ((SalesContract) c).getSalesTaxAmount();
+                    double recordingFee = ((SalesContract) c).getRecordingFee();
+                    double processingFee = ((SalesContract) c).getProcessingFee();
+                    double months = ((SalesContract) c).getMonths();
+                    boolean hasFinanceOption = ((SalesContract) c).isHasFinanceOption();
+                    String salesFormat = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f", date, userName, userEmail, vin, year, make, model, vehicleType, color, odometer, price, saleTaxAmount, recordingFee, processingFee, totalPrice, hasFinanceOption ? "YES" : "NO", monthlyPayment);
+                    bufferedWriter.write(salesFormat);
+                    bufferedWriter.newLine();
+                }
+
+                else if (c instanceof LeaseContract) {
+                    double expectedEndingValue = ((LeaseContract) c).getExpectedEndingValue();
+                    double leaseFee = ((LeaseContract) c).getLeaseFee();
+                    String leaseFormat = String.format("LEASE|%s|%s|%s|%d|%s|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f", date, userName, userEmail, vin, date, make, model, vehicleType, color, odometer, price, expectedEndingValue, leaseFee, totalPrice, monthlyPayment);
+                    bufferedWriter.write(leaseFormat);
+                    bufferedWriter.newLine();
+                }
+
+            }
+            bufferedWriter.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

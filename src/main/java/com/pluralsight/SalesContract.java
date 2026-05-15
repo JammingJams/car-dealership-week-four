@@ -110,6 +110,8 @@ public class SalesContract extends Contract{
 
     @Override
     public String toString() {
-        return String.format(        "SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%b|%.2f",        getDate(),        getCustomerName(),        getCustomerEmail(),        getVehicleSold().getVin(),        getVehicleSold().getYear(),       getVehicleSold().getMake(),        getVehicleSold().getModel(),        getVehicleSold().getVehicleType(),        getVehicleSold().getColor(),        getVehicleSold().getOdometer(),        getVehicleSold().getPrice(),        getSalesTaxAmount(),        getRecordingFee(),        getTotalPrice(),        isHasFinanceOption(),        getMonthlyPayment()    );
+        return String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%b|%.2f", getDate(), getCustomerName(), getCustomerEmail(), getVehicleSold().getVin(),
+                getVehicleSold().getYear(), getVehicleSold().getMake(), getVehicleSold().getModel(), getVehicleSold().getVehicleType(), getVehicleSold().getColor(),
+                getVehicleSold().getOdometer(), getVehicleSold().getPrice(), getSalesTaxAmount(), getRecordingFee(), getTotalPrice(), isHasFinanceOption(), getMonthlyPayment());
     }
 }

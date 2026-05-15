@@ -264,60 +264,13 @@ public class UserInterface {
 
             switch (sc.nextLine().trim().toLowerCase()) {
                 case ("1") -> {
-                    boolean saleLoop = true;
-                    Vehicle vehicleChoice = null;
-                    while (saleLoop) {
-                        System.out.print("Please type in the VIN number for the vehicle you want: ");
-
-                        try {
-                            int userInput = sc.nextInt();
-
-                            for (Vehicle v : dealership.getInventory()) {
-                                if (userInput == v.getVin()) {
-                                    sc.nextLine();
-                                    vehicleChoice = v;
-                                    saleLoop = false;
-                                }
-                            }
-                            if (saleLoop) {
-                                System.out.println("Invalid VIN number!");
-                            }
-                        }
-
-                        catch (InputMismatchException e) {
-                            System.out.println("Invalid UserInput");
-                            sc.nextLine();
-                        }
-                    }
-
-                    DateTimeFormatter isoFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    LocalDate unParsedDate = LocalDate.now();
-                    String dateNow = unParsedDate.format(isoFormat);
-
-
-                    System.out.print("Please enter your name: ");
-                    String userName = sc.nextLine().trim();
-
-                    System.out.print("Please enter your email: ");
-                    String userEmail = sc.nextLine().trim();
-
-                    SalesContract salesContract = new SalesContract(dateNow, userName, userEmail, vehicleChoice);
-
-                    contracts.add(salesContract);
-                    contracts.add(salesContract);
-
-                    System.out.println(contracts.size());
-
-                    for (Contract c : contracts) {
-                        System.out.println(c);
-                    }
-
+                    ui.userChoiceForLoop("s");
                 }
                 case ("2") -> {
-
+                    ui.userChoiceForLoop("l");
                 }
                 case ("x") -> {
-
+                    userLoop = false;
                 }
                 default -> {
                     System.out.println("Please input a 1, 2, or x!");
@@ -330,6 +283,59 @@ public class UserInterface {
 
     public static void printOutVehicle(Vehicle v) {
         System.out.printf("%d|%d|%s|%s|%s|%s|%d|%.2f\n", v.getVin(), v.getYear(), v.getMake(), v.getModel(), v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
+    }
+
+    public void userChoiceForLoop(String userDecision) {
+        boolean saleLoop = true;
+        Vehicle vehicleChoice = null;
+        while (saleLoop) {
+            System.out.print("Please type in the VIN number for the vehicle you want: ");
+
+            try {
+                int userInput = sc.nextInt();
+
+                for (Vehicle v : dealership.getInventory()) {
+                    if (userInput == v.getVin()) {
+                        sc.nextLine();
+                        vehicleChoice = v;
+                        saleLoop = false;
+                    }
+                }
+                if (saleLoop) {
+                    System.out.println("Invalid VIN number!");
+                }
+            }
+
+            catch (InputMismatchException e) {
+                System.out.println("Invalid UserInput");
+                sc.nextLine();
+            }
+        }
+
+        DateTimeFormatter isoFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate unParsedDate = LocalDate.now();
+        String dateNow = unParsedDate.format(isoFormat);
+
+
+        System.out.print("Please enter your name: ");
+        String userName = sc.nextLine().trim();
+
+        System.out.print("Please enter your email: ");
+        String userEmail = sc.nextLine().trim();
+
+        SalesContract salesContract = new SalesContract(dateNow, userName, userEmail, vehicleChoice);
+        LeaseContract leaseContract = new LeaseContract(dateNow, userName, userEmail, vehicleChoice);
+
+        if(userDecision.equalsIgnoreCase("s")) {
+            contracts.add(salesContract);
+        }
+        else if (userDecision.equalsIgnoreCase("l")) {
+            contracts.add(leaseContract);
+        }
+
+        System.out.println(contracts.size());
+
+        ContractDataManager.saveContractTransaction(contracts);
     }
 
 }
