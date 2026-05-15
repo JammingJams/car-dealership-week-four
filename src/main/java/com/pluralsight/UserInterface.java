@@ -24,6 +24,7 @@ public class UserInterface {
                     "(1) -> View all vehicles\n" +
                     "(2) -> Add vehicle\n" +
                     "(3) -> Remove vehicle\n" +
+                    "(4) -> Sell/Lease vehicle\n" +
                     "(X) -> Exits program\n");
 
             String userInput = sc.nextLine().toLowerCase().trim();
@@ -34,6 +35,8 @@ public class UserInterface {
                 case ("2") -> ui.processGetAddVehiclesRequest();
 
                 case ("3") -> ui.processGetRemoveVehiclesRequest();
+
+                case ("4") -> System.out.println("SALE/LEASE PROCESS HERE");
 
                 case ("x") -> userInMainMenu = false;
 
@@ -99,6 +102,10 @@ public class UserInterface {
 
     public void processGetRemoveVehiclesRequest() {
         ui.checkUserSearch("r");
+
+    }
+
+    public void processGetSaleLeaseContract() {
 
     }
 
@@ -222,6 +229,7 @@ public class UserInterface {
                     || userChoice.equalsIgnoreCase(String.valueOf(c.getOdometer())) || userChoice.equalsIgnoreCase(String.valueOf(c.getVin())))
             {
             v = c;
+            break;
             }
 
         }
@@ -235,6 +243,56 @@ public class UserInterface {
         else if (option.equalsIgnoreCase("r")) {
             printOutVehicle(v);
             dealership.removeVehicle(v);
+        }
+
+    }
+
+    public void userBuyLeaseCheckOut() {
+        boolean userLoop = true;
+
+        while (userLoop) {
+
+            System.out.println("Please select an option");
+            System.out.print("(1) -> Buy Vehicle\n +" +
+                    "(2) -> Lease Vehicle\n" +
+                    "(X) -> Exit Menu");
+
+            switch (sc.nextLine().trim().toLowerCase()) {
+                case ("1") -> {
+                    boolean saleLoop = true;
+                    Vehicle vehicleChoice = null;
+                    while (saleLoop) {
+                        System.out.print("Please type in the VIN number for the vehicle you want: ");
+                        try {
+                            for (Vehicle v : dealership.getInventory()) {
+                                if (sc.nextInt() == v.getVin()) {
+                                    sc.nextLine();
+                                    vehicleChoice = v;
+                                    break;
+                                }
+                            }
+                            System.out.println("Invalid VIN number!");
+                            sc.nextLine();
+                        }
+                        catch (InputMismatchException e) {
+                            System.out.println("Invalid UserInput");
+                            sc.nextLine();
+                        }
+                    }
+                    SalesContract salesContract = new SalesContract();
+
+                }
+                case ("2") -> {
+
+                }
+                case ("x") -> {
+
+                }
+                default -> {
+                    System.out.println("Please input a 1, 2, or x!");
+                }
+            }
+
         }
 
     }
